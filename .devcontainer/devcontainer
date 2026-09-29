@@ -1,0 +1,16 @@
+{
+  "name": "HighPerf AI/ML Inference Dev",
+  "image": "mcr.microsoft.com/devcontainers/cpp:latest",
+  "postCreateCommand": "bash scripts/fetch_assets.sh && cmake -S . -B build -DBUILD_ONNXRUNTIME=ON -DBUILD_REST_API=ON && cmake --build build --config Release -j",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.cpptools",
+        "ms-vscode.cmake-tools",
+        "twxs.cmake",
+        "ms-azuretools.vscode-docker"
+      ]
+    }
+  },
+  "remoteUser": "vscode"
+}

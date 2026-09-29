@@ -1,0 +1,43 @@
+name: CMake Matrix CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches-ignore: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    name: highperf-ai-ml-inference (build-and-test)
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install deps (Linux)
+        if: matrix.os == 'ubuntu-latest'
+        run: sudo apt-get update && sudo apt-get install -y build-essential cmake curl unzip
+
+      - name: Fetch assets (CPU)
+        run: bash scripts/fetch_assets.sh
+
+      - name: Configure (CMake)
+        run: cmake -S . -B build -DBUILD_ONNXRUNTIME=ON -DBUILD_LIBTORCH=OFF -DBUILD_REST_API=ON -DFORCE_CPU_ORT=ON
+
+      - name: Build
+        run: cmake --build build --config Release -j
+
+      - name: Test (ctest)
+        run: ctest --test-dir build --output-on-failure
