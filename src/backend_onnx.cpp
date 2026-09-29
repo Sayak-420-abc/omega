@@ -40,6 +40,12 @@ static void topk(const float* data, int n, int k, std::vector<int>& idx, std::ve
   for (int i = 0; i < k; ++i) val[i] = data[idx[i]];
 }
 
+ONNXBackend::~ONNXBackend() {
+  if (memory_info_) delete static_cast<Ort::MemoryInfo*>(memory_info_);
+  if (session_) delete static_cast<Ort::Session*>(session_);
+  if (env_) delete static_cast<Ort::Env*>(env_);
+}
+
 bool ONNXBackend::load(const std::string& model_path, int num_threads) {
   // Warn users if linked against GPU ORT but CUDA runtime isn't available
 #if defined(ORT_HAS_CUDA)

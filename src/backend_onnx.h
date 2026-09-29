@@ -9,6 +9,7 @@ struct ONNXPredictResult {
 
 class ONNXBackend {
 public:
+  ~ONNXBackend();
   bool load(const std::string& model_path, int num_threads = 1);
   ONNXPredictResult classify(const unsigned char* rgb_data, int width, int height, int channels, int topk = 5);
 

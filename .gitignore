@@ -1,0 +1,22 @@
+# Build output directories
+build/
+bin/
+out/
+.vs/
+*.user
+*.suo
+
+# Downloaded third-party libraries & model assets
+third_party/onnxruntime/
+third_party/libtorch/
+models/*.onnx
+models/*.pt
+assets/sample.jpg
+assets/imagenet_labels.txt
+
+# Temporary / OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.tmp
+*.log

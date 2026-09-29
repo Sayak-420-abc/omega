@@ -9,6 +9,7 @@ struct TorchPredictResult {
 
 class TorchBackend {
 public:
+  ~TorchBackend();
   bool load(const std::string& model_path);
   TorchPredictResult classify(const unsigned char* rgb_data, int width, int height, int channels, int topk = 5);
 private:

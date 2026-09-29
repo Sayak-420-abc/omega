@@ -16,6 +16,12 @@ static void topk_vec(const float* data, int n, int k, std::vector<int>& idx, std
   for (int i=0;i<k;++i) val[i]=data[idx[i]];
 }
 
+TorchBackend::~TorchBackend() {
+#ifdef HAS_TORCH_BACKEND
+  if (module_) delete static_cast<torch::jit::script::Module*>(module_);
+#endif
+}
+
 bool TorchBackend::load(const std::string& model_path) {
 #ifndef HAS_TORCH_BACKEND
   (void)model_path;
